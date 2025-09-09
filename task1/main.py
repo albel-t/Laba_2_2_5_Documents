@@ -1,86 +1,165 @@
+import sys
+import os
 from docx import Document
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from laba_logging import *
+from replacement import *
+
+InitFile(__file__)
+
+def err():
+    print("Вы что-то сделали неверно, попробуйте еще раз")
+    return input()
+
+
+def Referat():
+    print("Подготовка к созданию...")
+    doc = Document("D:\\projects\\VisualStudioCode\\Laba_2_2_5_Graphics\\templates\\Реферат.docx")
+    dict_data = {
+        '__authors__' : "me"
+    }
+    print("Введите авторов через запятую:    ")
+    tmp = input().replace(",", ",\n")
+    while len(tmp.split(".")) < 3:
+        tmp = err().replace(",", ",\n")
+    dict_data['__authors__'] = tmp
+
+
+    print("Ведите правообладателя (ФИО) или Название организации:    ")
+    dict_data['__director__'] = input()
+
+    print("Ведите название вашего модуля:    ")
+    dict_data['__program__'] = input()
+    name = f"Реферат {dict_data['__program__']}.docx"
+
+    print("Придумайте аннотацию к вашему модулю:    ")
+    print("\t- Для чего нужен модуль. \n\t- Что использует модуль для работы \n\t- Область применения данного модуля")
+    tmp = input()
+    while (tmp.find("модул") < 0) or (tmp.find("для") < 0) or (len(tmp) < 15):
+        tmp = err()
+    dict_data['__annotation__'] = tmp
+
+    print("Укажите тип ЭВМ:    ")
+    dict_data['__type__'] = input()
+
+    print("Укажите язык создания:    ")
+    tmp = input()
+    while True:
+        f = True
+        for tmp_ in tmp.split(", "):
+            if tmp_ not in ['C++', "python", "java", 'питон', "C#", "C", ]:
+                tmp = err()
+                f = False
+                break
+        if f == True:
+            break
+    dict_data['__language__'] = tmp
     
-def replace_in_paragraph(paragraph, old_text, new_text):
-    if old_text in paragraph.text:
-
-        style = paragraph.style
-        runs = paragraph.runs
-        
-        full_text = ''.join(run.text for run in runs)
-        print(full_text)
-
-        if old_text in full_text:
-            paragraph.clear()
-            parts = full_text.split(old_text)
-            
-            for i, part in enumerate(parts):
-                if part:  
-                    paragraph.add_run(part)
-                
-                if i < len(parts) - 1:
-                    run = paragraph.add_run(new_text)
-                    if runs:
-                        first_run = runs[0]
-                        run.bold = first_run.bold
-                        run.italic = first_run.italic
-                        run.underline = first_run.underline
-                        if first_run.font.color:
-                            run.font.color.rgb = first_run.font.color.rgb
-                        if first_run.font.name:
-                            run.font.name = first_run.font.name
-                        if first_run.font.size:
-                            run.font.size = first_run.font.size
-            paragraph.style = style
-
-def replace_in_table(table, old_text, new_text):
-    for row in table.rows:
-        for cell in row.cells:
-            for paragraph in cell.paragraphs:
-                replace_in_paragraph(paragraph, old_text, new_text)
-            for nested_table in cell.tables:
-                replace_in_table(nested_table, old_text, new_text)
-
-
-def replace_text_in_docx(input_file, output_file, old_text, new_text):
-
-    doc = Document(input_file)
-
-    for paragraph in doc.paragraphs:
-        replace_in_paragraph(paragraph, old_text, new_text)
+    print("Укажите операционную систему:    ")
+    dict_data['__os__'] = input()
     
-    for table in doc.tables:
-        replace_in_table(table, old_text, new_text)
-    
-    
-    doc.save(output_file)
-    print(f"Замена завершена. Файл сохранен как: {output_file}")
+    print("Укажите затрачиваемое количество памяти (в Мб):    ")
+    dict_data['__memory__'] = input()
+    print("Сохраняется...    ")
+
+    replace(doc, dict_data)
+    doc.save(name)
+    print(f"Сохранено {name}! ")
 
 
 
 
-if __name__ == "__main__":
-    replace_text_in_docx(
+def ConsentToInformation():
+    '''
+Белов Александр Кириллович
+22.04.2007
+admin
+Россия, Совхозная, 39а
+Русское
+0
+ксорти
+50
+'''
+    print("Подготовка к созаднию...")
+    doc = Document("D:\\projects\\VisualStudioCode\\Laba_2_2_5_Graphics\\templates\\Согласие на указание сведений об авторе.docx")
+    this_dict = {
+        '__name__' : "program"
+        }
 
-        input_file="Реферат.docx",
-        output_file="измененный_документ.docx",
-        old_text="__authors__",
-        new_text="фувертпвот"
-    )
-    
+    print("Введите ФИО полностью: ")
+    this_dict['__full_user_name__'] = input()
+    user_name = this_dict['__full_user_name__'].split(" ")
+    for i in range(0, len(user_name)):
+        if i == 0:
+            this_dict['__user_name__'] = user_name[i]
+        else:
+            this_dict['__user_name__'] += user_name[i][0] + ". "
     
 
+    print("Введите дату рождения DD.MM.YYYY: ")
+    date = input().split(".")
+    while True:
+        try:
+            this_dict['__day__'] =   str(int(date[0]))
+            this_dict['__month__'] = str(int(date[1]))
+            this_dict['__year__'] =  str(int(date[2]))
+            break
+        except:
+            print("что то пошло не так, попробуйте еще")
 
-# Для чего нужен модуль. Модуль используется для...
-# Что использует модуль для работы 
-# Область применения данного модуля
+    print("Введите свою должность: ")
+    this_dict['__post__'] = input()
 
-# __authors__
-# __director__
-# __program__
-# __annotation__
-# __type__
-# __language__
-# __os__
-# __memory__
+    print("Введите место постоянного жительства, включая указание страны: ")
+    this_dict['__residence__'] = input()    
+    
+    print("Введите гражданство: ")
+    this_dict['__nationality__'] = input()
+    
+    print("Выбрать что-то одно из нижеприведенного: \n0 - если Физ. Лицо \n1 - если Юр. Лицо")
+    while(1):
+        a = input()
+        if a == "0":
+            print("секунду ... ")
+            this_dict['__info__'] = this_dict['__user_name__'] + " " + this_dict['__residence__']
+            break
+        if a == "1":
+            print("Введите наименование, место нахождения, основной государственный регистрационный номер (ОГРН)  и идентификационный номер налогоплательщика (ИНН)")
+            this_dict['__info__'] = input()
+            break
+        else:
+            print("что то не так, попробуйте еще раз")
 
+    
+    
+    print("Введите название проекта: ")
+    this_dict['__name__'] = input()
+
+    print("Укажите сколько процентов работы вы выполняли: ")
+    percent = input()
+    while True:
+        try:
+            this_dict['__percent__'] = str(int(percent)%101)
+            break
+        except:
+            print("что то пошло не так, попробуйте еще")
+
+    # print("Укажите сколько процентов работы вы выполняли: ")
+    # this_dict['__residence__'] = input()
+
+    replace(doc, this_dict)
+
+    doc.save("Согласие на указание сведений об " + this_dict['__full_user_name__'])
+
+
+ConsentToInformation()
+Referat()
+# A.K.<tkjd^W
+# sghfggfgn
+# zdsfbhdgnfgh
+# модуль нужен для тестирования
+# ывпв
+# C
+# zdfgdf
+# 10
