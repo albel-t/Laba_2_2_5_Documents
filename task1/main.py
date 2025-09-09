@@ -6,6 +6,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from laba_logging import *
 from replacement import *
 
+InitLogFile()
+
 InitFile(__file__)
 
 def err():
@@ -150,7 +152,7 @@ admin
 
     replace(doc, this_dict)
 
-    doc.save("Согласие на указание сведений об " + this_dict['__full_user_name__'])
+    doc.save("Согласие на указание сведений об " + this_dict['__full_user_name__'] + "docx")
 
 
 ConsentToInformation()

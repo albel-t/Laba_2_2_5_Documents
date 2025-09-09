@@ -2,7 +2,11 @@ from docx import Document
 from docx.oxml.ns import qn
 from docx.oxml import parse_xml
 import re
-    
+
+from laba_logging import *
+
+InitFile(__file__)
+
 def replace_in_paragraph(paragraph, old_text, new_text):
     if old_text in paragraph.text:
 
