@@ -4,9 +4,9 @@ from docx import Document
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from laba_logging import *
-from replacement import *
-
 InitLogFile()
+
+from replacement import *
 
 InitFile(__file__)
 
@@ -94,7 +94,7 @@ admin
     user_name = this_dict['__full_user_name__'].split(" ")
     for i in range(0, len(user_name)):
         if i == 0:
-            this_dict['__user_name__'] = user_name[i]
+            this_dict['__user_name__'] = user_name[i] + " "
         else:
             this_dict['__user_name__'] += user_name[i][0] + ". "
     
@@ -152,11 +152,11 @@ admin
 
     replace(doc, this_dict)
 
-    doc.save("Согласие на указание сведений об " + this_dict['__full_user_name__'] + "docx")
+    doc.save("Согласие на указание сведений об " + this_dict['__full_user_name__'] + ".docx")
 
 
 ConsentToInformation()
-Referat()
+# Referat()
 # A.K.<tkjd^W
 # sghfggfgn
 # zdsfbhdgnfgh
@@ -165,3 +165,13 @@ Referat()
 # C
 # zdfgdf
 # 10
+'''
+Белов Алексаендр Кириллович
+22.04.2007
+разработчик
+россия д5
+российское
+0
+бот
+20
+'''

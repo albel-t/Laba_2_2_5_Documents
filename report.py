@@ -126,7 +126,7 @@ path_to_this_document = os.path.dirname(os.path.abspath(__file__))
 path_to_template_document = "D:\\projects\\Templates\\шаблон отчета Кафедра САПР.docx"
 path_to_README = "README.md"
 path_to_imgs = path_to_this_document + '\\img'
-name_laba = "laba_1"
+name_laba = "laba_2"
 
 doc = Document(path_to_template_document)
 
