@@ -100,8 +100,8 @@ admin
     
 
     print("Введите дату рождения DD.MM.YYYY: ")
-    date = input().split(".")
     while True:
+        date = input().split(".")
         try:
             this_dict['__day__'] =   str(int(date[0]))
             this_dict['__month__'] = str(int(date[1]))
